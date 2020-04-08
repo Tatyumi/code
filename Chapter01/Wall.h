@@ -1,0 +1,25 @@
+#pragma once
+#include "SDL/SDL_stdinc.h"
+
+class Wall
+{
+	// êF
+	struct Color
+	{
+		Uint8 red	= 255;
+		Uint8 green	= 255;
+		Uint8 blue	= 255;
+		Uint8 alpha	= 255;
+	};
+
+public:
+	Wall();
+	~Wall();
+
+private:
+	// êF
+	Color mColor;
+	// å˙Ç≥
+	unsigned int mThickness;
+};
+
