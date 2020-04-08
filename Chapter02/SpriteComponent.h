@@ -23,8 +23,12 @@ public:
 	int GetTexHeight() const { return mTexHeight; }
 	int GetTexWidth() const { return mTexWidth; }
 protected:
+	// 描画テクスチャ
 	SDL_Texture* mTexture;
+	// 描画順序(奥から手前)
 	int mDrawOrder;
+	// 横サイズ
 	int mTexWidth;
+	// 縦サイズ
 	int mTexHeight;
 };

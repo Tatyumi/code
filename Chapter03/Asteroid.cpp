@@ -17,18 +17,19 @@ Asteroid::Asteroid(Game* game)
 	:Actor(game)
 	,mCircle(nullptr)
 {
-	// Initialize to random position/orientation
+	// ランダムで初期位置を設定
 	Vector2 randPos = Random::GetVector(Vector2::Zero,
 		Vector2(1024.0f, 768.0f));
 	SetPosition(randPos);
 
+	// ランダムな向きで初期化
 	SetRotation(Random::GetFloatRange(0.0f, Math::TwoPi));
 
-	// Create a sprite component
+	// スプライトコンポーネント生成
 	SpriteComponent* sc = new SpriteComponent(this);
 	sc->SetTexture(game->GetTexture("Assets/Asteroid.png"));
 
-	// Create a move component, and set a forward speed
+	// ムーブコンポーネント生成
 	MoveComponent* mc = new MoveComponent(this);
 	mc->SetForwardSpeed(150.0f);
 

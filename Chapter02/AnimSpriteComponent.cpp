@@ -20,19 +20,21 @@ void AnimSpriteComponent::Update(float deltaTime)
 {
 	SpriteComponent::Update(deltaTime);
 
+	// テクスチャが格納されているか判別
 	if (mAnimTextures.size() > 0)
 	{
-		// Update the current frame based on frame rate
-		// and delta time
+		// 格納されている場合
+
+		// 現在のフレームレートを算出
 		mCurrFrame += mAnimFPS * deltaTime;
 		
-		// Wrap current frame if needed
+		// アニメーションを周期的に巻き戻す
 		while (mCurrFrame >= mAnimTextures.size())
 		{
 			mCurrFrame -= mAnimTextures.size();
 		}
 
-		// Set the current texture
+		// 現状のフレームレートに合わせたテクスチャを設定
 		SetTexture(mAnimTextures[static_cast<int>(mCurrFrame)]);
 	}
 }

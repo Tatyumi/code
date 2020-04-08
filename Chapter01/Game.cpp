@@ -117,8 +117,13 @@ void Game::RunLoop()
 	{
 		// 実行部
 
+		// 入力処理
 		ProcessInput();
+
+		// 更新処理
 		UpdateGame();
+
+		// 出力生成
 		GenerateOutput();
 	}
 }

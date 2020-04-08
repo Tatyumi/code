@@ -12,6 +12,7 @@
 class Actor
 {
 public:
+	// 状態を表す列挙
 	enum State
 	{
 		EActive,
@@ -19,17 +20,19 @@ public:
 		EDead
 	};
 
+	// コンストラクタ
 	Actor(class Game* game);
+	// デストラクタ
 	virtual ~Actor();
 
-	// Update function called from Game (not overridable)
+	// 更新処理
 	void Update(float deltaTime);
-	// Updates all the components attached to the actor (not overridable)
+	// コンポーネント更新処理
 	void UpdateComponents(float deltaTime);
-	// Any actor-specific update code (overridable)
+	// アクター更新処理
 	virtual void UpdateActor(float deltaTime);
 
-	// Getters/setters
+	// ゲッター、セッター
 	const Vector2& GetPosition() const { return mPosition; }
 	void SetPosition(const Vector2& pos) { mPosition = pos; }
 	float GetScale() const { return mScale; }
@@ -43,11 +46,12 @@ public:
 	class Game* GetGame() { return mGame; }
 
 
-	// Add/remove components
+	// コンポーネント追加
 	void AddComponent(class Component* component);
+	// コンポーネント削除
 	void RemoveComponent(class Component* component);
 private:
-	// Actor's state
+	// アクターの状態
 	State mState;
 
 	// Transform
@@ -55,6 +59,7 @@ private:
 	float mScale;
 	float mRotation;
 
+	// コンポーネント配列
 	std::vector<class Component*> mComponents;
 	class Game* mGame;
 };

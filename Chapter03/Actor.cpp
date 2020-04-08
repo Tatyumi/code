@@ -55,14 +55,18 @@ void Actor::UpdateActor(float deltaTime)
 
 void Actor::ProcessInput(const uint8_t* keyState)
 {
+	// 状態判別
 	if (mState == EActive)
 	{
-		// First process input for components
+		// アクティブの場合
+
+		// コンポーネント初めの入力
 		for (auto comp : mComponents)
 		{
 			comp->ProcessInput(keyState);
 		}
 
+		// アクターの入力処理
 		ActorInput(keyState);
 	}
 }

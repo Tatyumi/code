@@ -33,7 +33,7 @@ public:
 
 	// ProcessInput function called from Game (not overridable)
 	void ProcessInput(const uint8_t* keyState);
-	// Any actor-specific input code (overridable)
+	// アクター独自の入力処理
 	virtual void ActorInput(const uint8_t* keyState);
 
 	// Getters/setters

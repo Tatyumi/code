@@ -45,6 +45,7 @@ bool Game::Initialize()
 		return false;
 	}
 	
+	// PNG画像ファイルをロード
 	if (IMG_Init(IMG_INIT_PNG) == 0)
 	{
 		SDL_Log("Unable to initialize SDL_image: %s", SDL_GetError());
@@ -91,36 +92,46 @@ void Game::ProcessInput()
 	mShip->ProcessKeyboard(state);
 }
 
+// ゲーム更新処理
 void Game::UpdateGame()
 {
-	// Compute delta time
-	// Wait until 16ms has elapsed since last frame
+	// 前のフレームから16ms経過するまで待機
 	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16))
 		;
 
+	// 前フレームからの経過時間を取得
 	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+
+	// 指定の時間以上経過しているか判別
 	if (deltaTime > 0.05f)
 	{
+		// 経過していた場合
+
+		// 最大値代入
 		deltaTime = 0.05f;
 	}
+
+	// チック更新
 	mTicksCount = SDL_GetTicks();
 
-	// Update all actors
+	// 全アクター更新
 	mUpdatingActors = true;
 	for (auto actor : mActors)
 	{
 		actor->Update(deltaTime);
 	}
+	// 更新終了
 	mUpdatingActors = false;
 
-	// Move any pending actors to mActors
+	// 待機状態のアクターを活動状態アクター配列に移動
 	for (auto pending : mPendingActors)
 	{
 		mActors.emplace_back(pending);
 	}
+	// 移動後空にする
 	mPendingActors.clear();
 
-	// Add any dead actors to a temp vector
+	// 死んでいる状態のアクタを配列に格納
 	std::vector<Actor*> deadActors;
 	for (auto actor : mActors)
 	{
@@ -130,7 +141,7 @@ void Game::UpdateGame()
 		}
 	}
 
-	// Delete dead actors (which removes them from mActors)
+	// 死んでいる状態配列を削除
 	for (auto actor : deadActors)
 	{
 		delete actor;
@@ -183,8 +194,8 @@ void Game::LoadData()
 
 void Game::UnloadData()
 {
-	// Delete actors
-	// Because ~Actor calls RemoveActor, have to use a different style loop
+	// 全アクタ削除
+	// 各アクタのデストラクタでRemoveActor()が呼び出されるので、別途ループで実行
 	while (!mActors.empty())
 	{
 		delete mActors.back();
@@ -209,7 +220,7 @@ SDL_Texture* Game::GetTexture(const std::string& fileName)
 	}
 	else
 	{
-		// Load from file
+		// ファイルをロード
 		SDL_Surface* surf = IMG_Load(fileName.c_str());
 		if (!surf)
 		{
@@ -217,7 +228,7 @@ SDL_Texture* Game::GetTexture(const std::string& fileName)
 			return nullptr;
 		}
 
-		// Create texture from surface
+		// サーフェスからテクスチャを生成
 		tex = SDL_CreateTextureFromSurface(mRenderer, surf);
 		SDL_FreeSurface(surf);
 		if (!tex)
@@ -240,57 +251,80 @@ void Game::Shutdown()
 	SDL_Quit();
 }
 
+// アクター追加
 void Game::AddActor(Actor* actor)
 {
-	// If we're updating actors, need to add to pending
+	// アクターが更新中か判別
 	if (mUpdatingActors)
 	{
+		// 更新中の場合
+
+		// 待ち状態のアクター配列に格納
 		mPendingActors.emplace_back(actor);
 	}
 	else
 	{
+		// 更新中でない場合
+
+		// 活動状態のアクター配列に格納
 		mActors.emplace_back(actor);
 	}
 }
 
+// アクター削除
 void Game::RemoveActor(Actor* actor)
 {
-	// Is it in pending actors?
+	// 待ち状態のアクター配列にアクターが格納されているか確認
 	auto iter = std::find(mPendingActors.begin(), mPendingActors.end(), actor);
+	
+	// 格納されているか判別
 	if (iter != mPendingActors.end())
 	{
-		// Swap to end of vector and pop off (avoid erase copies)
+		// 格納されている場合
+
+		// 末尾と交換
 		std::iter_swap(iter, mPendingActors.end() - 1);
+		// 削除
 		mPendingActors.pop_back();
 	}
 
-	// Is it in actors?
+	// 活動状態のアクター配列にアクターが格納されているか確認
 	iter = std::find(mActors.begin(), mActors.end(), actor);
+
+	// 格納されているか判別
 	if (iter != mActors.end())
 	{
-		// Swap to end of vector and pop off (avoid erase copies)
+		// 格納されている場合
+
+		// 末尾と交換
 		std::iter_swap(iter, mActors.end() - 1);
+		// 削除
 		mActors.pop_back();
 	}
 }
 
+// スプライト追加
 void Game::AddSprite(SpriteComponent* sprite)
 {
-	// Find the insertion point in the sorted vector
-	// (The first element with a higher draw order than me)
+	// 描画順を取得
 	int myDrawOrder = sprite->GetDrawOrder();
+
+	// 
 	auto iter = mSprites.begin();
 	for ( ;
 		iter != mSprites.end();
 		++iter)
 	{
+		// イテレータとの描画順を比較
 		if (myDrawOrder < (*iter)->GetDrawOrder())
 		{
+			// イテレータより小さい場合
+
 			break;
 		}
 	}
 
-	// Inserts element before position of iterator
+	// イテレータの前の位置に挿入
 	mSprites.insert(iter, sprite);
 }
 

@@ -20,7 +20,9 @@ public:
 	
 	const Vector2& GetCenter() const;
 private:
+	// ”¼Œa
 	float mRadius;
 };
 
+// 2‚Â‚Ì‰~‚ÌŒğ·‚ğ”»•Ê
 bool Intersect(const CircleComponent& a, const CircleComponent& b);

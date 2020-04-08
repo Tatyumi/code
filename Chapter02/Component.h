@@ -10,18 +10,17 @@
 class Component
 {
 public:
-	// Constructor
-	// (the lower the update order, the earlier the component updates)
+	// コンストラクタ
 	Component(class Actor* owner, int updateOrder = 100);
-	// Destructor
+	// デストラクタ
 	virtual ~Component();
-	// Update this component by delta time
+	// 更新処理
 	virtual void Update(float deltaTime);
-
+	// ゲッター
 	int GetUpdateOrder() const { return mUpdateOrder; }
 protected:
-	// Owning actor
+	// コンポーネントを所有するアクター
 	class Actor* mOwner;
-	// Update order of component
+	// コンポーネントの更新順序
 	int mUpdateOrder;
 };

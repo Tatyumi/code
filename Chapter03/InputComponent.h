@@ -33,11 +33,14 @@ public:
 	void SetClockwiseKey(int key) { mClockwiseKey = key; }
 	void SetCounterClockwiseKey(int key) { mCounterClockwiseKey = key; }
 private:
-	// The maximum forward/angular speeds
+	// 前進最大速度
 	float mMaxForwardSpeed;
+
+	// 回転最大速度
 	float mMaxAngularSpeed;
-	// Keys for forward/back movement
+	// 前進キー
 	int mForwardKey;
+	// 後退キー
 	int mBackKey;
 	// Keys for angular movement
 	int mClockwiseKey;

@@ -13,18 +13,18 @@ class AnimSpriteComponent : public SpriteComponent
 {
 public:
 	AnimSpriteComponent(class Actor* owner, int drawOrder = 100);
-	// Update animation every frame (overriden from component)
+	// アニメーション更新処理
 	void Update(float deltaTime) override;
-	// Set the textures used for animation
+	// アニメーションのテクスチャを設定
 	void SetAnimTextures(const std::vector<SDL_Texture*>& textures);
-	// Set/get the animation FPS
+	// アクセサ
 	float GetAnimFPS() const { return mAnimFPS; }
 	void SetAnimFPS(float fps) { mAnimFPS = fps; }
 private:
-	// All textures in the animation
+	// アニメーションでのすべてのテクスチャ
 	std::vector<SDL_Texture*> mAnimTextures;
-	// Current frame displayed
+	// 現在表示しているフレーム
 	float mCurrFrame;
-	// Animation frame rate
+	// アニメーションFPS
 	float mAnimFPS;
 };
